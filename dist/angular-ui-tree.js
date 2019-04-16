@@ -5,7 +5,6 @@
  */
 (function () {
   'use strict';
-
   angular.module('ui.tree', [])
     .constant('treeConfig', {
       treeClass: 'angular-ui-tree',
@@ -198,8 +197,8 @@
 
   angular.module('ui.tree')
 
-    .controller('TreeNodesController', ['$scope', '$element',
-      function ($scope, $element) {
+    .controller('TreeNodesController', ['$scope', '$element', '$timeout',
+      function ($scope, $element, $timeout) {
         this.scope = $scope;
 
         $scope.$element = $element;
@@ -243,7 +242,7 @@
           return $scope.$modelValue.length > 0;
         };
 
-        $scope.safeApply = function (fn) {
+       $scope.safeApply = function (fn) {
           var phase = this.$root.$$phase;
           if (phase == '$apply' || phase == '$digest') {
             if (fn && (typeof (fn) === 'function')) {
@@ -394,12 +393,12 @@
             if (element.prop('tagName').toLowerCase() === 'table') {
               scope.$emptyElm = angular.element($window.document.createElement('tr'));
               $trElm = element.find('tr');
-              
+
               //If we can find a tr, then we can use its td children as the empty element colspan.
               if ($trElm.length > 0) {
                 emptyElmColspan = angular.element($trElm).children().length;
               } else {
-                
+
                 //If not, by setting a huge colspan we make sure it takes full width.
                 //TODO(jcarter): Check for negative side effects.
                 emptyElmColspan = 1000000;
@@ -1523,7 +1522,7 @@
 
           /**
            * Get the event object for touches.
-           * 
+           *
            * @param  {MouseEvent|TouchEvent} e MouseEvent or TouchEvent that kicked off dragX method.
            * @return {MouseEvent|TouchEvent} Object returned as original event object.
            */
@@ -1541,7 +1540,7 @@
 
           /**
            * Generate object used to store data about node being moved.
-           * 
+           *
            * {angular.$scope} node Scope of the node that is being moved.
            */
           dragInfo: function (node) {
@@ -1771,19 +1770,19 @@
             pos.nowX = pageX;
             pos.nowY = pageY;
 
-            //Distance mouse moved between events.          
+            //Distance mouse moved between events.
             pos.distX = pos.nowX - pos.lastX;
             pos.distY = pos.nowY - pos.lastY;
 
-            //Direction mouse was moving.           
+            //Direction mouse was moving.
             pos.lastDirX = pos.dirX;
             pos.lastDirY = pos.dirY;
 
-            //Direction mouse is now moving (on both axis).          
+            //Direction mouse is now moving (on both axis).
             pos.dirX = pos.distX === 0 ? 0 : pos.distX > 0 ? 1 : -1;
             pos.dirY = pos.distY === 0 ? 0 : pos.distY > 0 ? 1 : -1;
 
-            //Axis mouse is now moving on.         
+            //Axis mouse is now moving on.
             newAx = Math.abs(pos.distX) > Math.abs(pos.distY) ? 1 : 0;
 
             //Do nothing on first move.
@@ -1793,7 +1792,7 @@
               return;
             }
 
-            //Calc distance moved on this axis (and direction).          
+            //Calc distance moved on this axis (and direction).
             if (pos.dirAx !== newAx) {
               pos.distAxX = 0;
               pos.distAxY = 0;
